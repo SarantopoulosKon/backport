@@ -95,7 +95,7 @@ const backportOnce = async ({
   await git("switch", base);
   await git("switch", "--create", head);
   try {
-    await git("cherry-pick", commitToBackport);
+    await git("cherry-pick", "-m1", "-n", commitToBackport);
   } catch (error) {
     await git("cherry-pick", "--abort");
     throw error;
@@ -164,6 +164,7 @@ const backport = async ({
       merged,
       number: pullRequestNumber,
       title: originalTitle,
+      _links: { commits }
     },
     repository: {
       name: repo,
@@ -178,6 +179,7 @@ const backport = async ({
   if (!merged) {
     return;
   }
+  info(commits.href);
 
   const backportBaseToHead = getBackportBaseToHead({
     action,
