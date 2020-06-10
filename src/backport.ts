@@ -193,7 +193,7 @@ const backport = async ({
   }
 
   const github = new GitHub(token);
-
+  info('Backporting...')
   await warnIfSquashIsNotTheOnlyAllowedMergeMethod({ github, owner, repo });
 
   // The merge commit SHA is actually not null.
