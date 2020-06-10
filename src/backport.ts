@@ -54,13 +54,14 @@ const warnIfSquashIsNotTheOnlyAllowedMergeMethod = async ({
   owner: string;
   repo: string;
 }) => {
+  warning('Test@!');
   const {
     data: { allow_merge_commit, allow_rebase_merge },
   } = await github.repos.get({ owner, repo });
   if (allow_merge_commit || allow_rebase_merge) {
     warning(
       [
-        "Your repository allows merge commits and rebase merging.",
+        "Your repository allows merge commits and rebase merging!!!!",
         " However, Backport only supports rebased and merged pull requests with a single commit and squashed and merged pull requests.",
         " Consider only allowing squash merging.",
         " See https://help.github.com/en/github/administering-a-repository/about-merge-methods-on-github for more information.",
@@ -181,6 +182,8 @@ const backport = async ({
   }
   info(commits.href);
 
+  info(`Backporting commit #${pullRequestNumber}`);
+
   const backportBaseToHead = getBackportBaseToHead({
     action,
     label,
@@ -193,7 +196,7 @@ const backport = async ({
   }
 
   const github = new GitHub(token);
-  info('Backporting...')
+  info('Backporting...');
   await warnIfSquashIsNotTheOnlyAllowedMergeMethod({ github, owner, repo });
 
   // The merge commit SHA is actually not null.
